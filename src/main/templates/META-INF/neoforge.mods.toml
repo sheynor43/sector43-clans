@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="sheynor43"
+description='''
+Простые кланы для Sector 43: название, тег и цвет над ником, в табе и в чате.
+Право на создание клана выдаётся через LuckPerms: sector43clans.create
+'''
+# Мод нужен только на сервере, клиентам ставить не обязательно
+displayTest="IGNORE_SERVER_VERSION"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="SERVER"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="SERVER"
