@@ -31,5 +31,12 @@ public class ClanConfig {
             .comment("Сколько секунд действует приглашение в клан")
             .defineInRange("inviteTimeoutSeconds", 300, 10, 86400);
 
+    public static final ModConfigSpec.DoubleValue RESIZE_MIN_HEIGHT = BUILDER
+            .comment("/resize: минимальный рост в блоках (обычный рост — 1.8)")
+            .defineInRange("resizeMinHeight", 1.3, 0.1, 16.0);
+    public static final ModConfigSpec.DoubleValue RESIZE_MAX_HEIGHT = BUILDER
+            .comment("/resize: максимальный рост в блоках")
+            .defineInRange("resizeMaxHeight", 2.5, 0.1, 16.0);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

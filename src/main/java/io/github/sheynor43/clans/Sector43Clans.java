@@ -21,13 +21,19 @@ public class Sector43Clans {
     public Sector43Clans(ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.SERVER, ClanConfig.SPEC);
 
-        NeoForge.EVENT_BUS.addListener(PermissionGatherEvent.Nodes.class, event -> event.addNodes(ClanPermissions.CREATE, ClanPermissions.ADMIN));
-        NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class, event -> ClanCommands.register(event.getDispatcher()));
+        NeoForge.EVENT_BUS.addListener(PermissionGatherEvent.Nodes.class, event -> event.addNodes(
+                ClanPermissions.CREATE, ClanPermissions.INVITE, ClanPermissions.ADMIN,
+                ClanPermissions.RESIZE, ClanPermissions.RESIZE_OTHERS));
+        NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class, event -> {
+            ClanCommands.register(event.getDispatcher());
+            ResizeCommand.register(event.getDispatcher());
+        });
         NeoForge.EVENT_BUS.addListener(ServerStartedEvent.class, event -> ClanManager.syncAll(event.getServer()));
         NeoForge.EVENT_BUS.addListener(ServerStoppedEvent.class, event -> ClanManager.clearInvites());
         NeoForge.EVENT_BUS.addListener(PlayerEvent.PlayerLoggedInEvent.class, event -> {
             if (event.getEntity() instanceof ServerPlayer player) {
                 ClanManager.onLogin(player);
+                ResizeCommand.onLogin(player);
             }
         });
     }

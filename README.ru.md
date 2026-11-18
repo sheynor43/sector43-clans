@@ -20,6 +20,7 @@
 - Админская команда, чтобы распустить любой клан.
 - Кланы сохраняются вместе с миром и переживают перезапуск.
 - Серверный конфиг: длина названия и тега, лимит участников, окраска ника, friendly fire и срок приглашения.
+- `/resize`: игроки с правом меняют свой рост (ванильный атрибут `minecraft:scale`), как плагин ResizePlayers.
 
 ## Требования
 
@@ -46,7 +47,7 @@
 | `/clan create <название>` | `sector43clans.create` | Создать клан, ты становишься лидером |
 | `/clan tag <тег>` | лидер | Сменить тег клана |
 | `/clan color <цвет>` | лидер | Сменить цвет (`red`, `gold`, `aqua`, `dark_purple`…) |
-| `/clan invite <игрок>` | лидер | Пригласить игрока, который сейчас онлайн |
+| `/clan invite <игрок>` | лидер с правом `sector43clans.invite` | Пригласить игрока, который сейчас онлайн |
 | `/clan accept` | приглашённый | Принять последнее приглашение |
 | `/clan decline` | приглашённый | Отклонить приглашение |
 | `/clan leave` | участник | Выйти из клана. Если лидер остался в клане один, клан распускается |
@@ -56,6 +57,10 @@
 | `/clan info [название]` | все | Информация о твоём или указанном клане |
 | `/clan list` | все | Все кланы на сервере |
 | `/clan admin disband <название>` | `sector43clans.admin` | Распустить любой клан |
+| `/resize` | `sector43clans.resize` | Показать свой рост |
+| `/resize <рост>` | `sector43clans.resize` | Изменить рост в блоках (обычный — 1.8, пределы в конфиге) |
+| `/resize reset` | `sector43clans.resize` | Вернуть обычный рост |
+| `/resize <рост> <игрок>` | `sector43clans.resize.others` | Изменить рост другому игроку |
 
 Игрок может состоять только в одном клане. Лидер не может выйти, пока в клане есть другие участники: сначала нужно передать лидерство или распустить клан.
 
@@ -66,12 +71,17 @@
 | Право | По умолчанию | Что даёт |
 |---|---|---|
 | `sector43clans.create` | операторы | Создание кланов |
+| `sector43clans.invite` | операторы | Приглашать в свой клан |
 | `sector43clans.admin` | операторы | Команды `/clan admin` |
+| `sector43clans.resize` | операторы | `/resize` для себя |
+| `sector43clans.resize.others` | операторы | `/resize` для других игроков |
 
 Пример для LuckPerms, чтобы кланы могли создавать только VIP и выше:
 
 ```
 /lp group vip permission set sector43clans.create true
+/lp group vip permission set sector43clans.invite true
+/lp group vip permission set sector43clans.resize true
 /lp group admin permission set sector43clans.admin true
 ```
 
@@ -89,6 +99,7 @@
 | `colorNames` | true | Красить ник в цвет клана. Если `false`, цветным будет только тег |
 | `friendlyFire` | true | Могут ли участники клана бить друг друга |
 | `inviteTimeoutSeconds` | 300 | Сколько секунд действует приглашение |
+| `resizeMinHeight` / `resizeMaxHeight` | 1.3 / 2.5 | Пределы роста для `/resize` в блоках |
 
 ## Как это устроено
 

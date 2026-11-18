@@ -16,9 +16,24 @@ public final class ClanPermissions {
             Sector43Clans.MODID, "create", PermissionTypes.BOOLEAN,
             (player, uuid, context) -> isOperator(player));
 
+    // sector43clans.invite — приглашать в клан (выдать группе vip)
+    public static final PermissionNode<Boolean> INVITE = new PermissionNode<>(
+            Sector43Clans.MODID, "invite", PermissionTypes.BOOLEAN,
+            (player, uuid, context) -> isOperator(player));
+
     // sector43clans.admin — распускать чужие кланы
     public static final PermissionNode<Boolean> ADMIN = new PermissionNode<>(
             Sector43Clans.MODID, "admin", PermissionTypes.BOOLEAN,
+            (player, uuid, context) -> isOperator(player));
+
+    // sector43clans.resize — менять свой рост командой /resize (выдать группе vip)
+    public static final PermissionNode<Boolean> RESIZE = new PermissionNode<>(
+            Sector43Clans.MODID, "resize", PermissionTypes.BOOLEAN,
+            (player, uuid, context) -> isOperator(player));
+
+    // sector43clans.resize.others — менять рост другим игрокам
+    public static final PermissionNode<Boolean> RESIZE_OTHERS = new PermissionNode<>(
+            Sector43Clans.MODID, "resize.others", PermissionTypes.BOOLEAN,
             (player, uuid, context) -> isOperator(player));
 
     private ClanPermissions() {}

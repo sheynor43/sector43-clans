@@ -20,6 +20,7 @@ Players can create a clan, pick a tag and a color, and invite friends. The clan 
 - Admin command to disband any clan.
 - Clans are saved with the world and survive restarts.
 - A server config for name and tag length, member limit, name coloring, friendly fire and invite timeout.
+- `/resize`: players with permission can change their height (vanilla `minecraft:scale` attribute), like the ResizePlayers plugin.
 
 ## Requirements
 
@@ -46,7 +47,7 @@ Players can create a clan, pick a tag and a color, and invite friends. The clan 
 | `/clan create <name>` | `sector43clans.create` | Create a clan. You become its leader |
 | `/clan tag <tag>` | leader | Change the clan tag |
 | `/clan color <color>` | leader | Change the clan color (`red`, `gold`, `aqua`, `dark_purple`…) |
-| `/clan invite <player>` | leader | Invite an online player |
+| `/clan invite <player>` | leader with `sector43clans.invite` | Invite an online player |
 | `/clan accept` | invited player | Accept the latest invitation |
 | `/clan decline` | invited player | Decline the invitation |
 | `/clan leave` | member | Leave the clan. A leader who is the only member disbands the clan this way |
@@ -56,6 +57,10 @@ Players can create a clan, pick a tag and a color, and invite friends. The clan 
 | `/clan info [name]` | everyone | Info about your clan or the named one |
 | `/clan list` | everyone | All clans on the server |
 | `/clan admin disband <name>` | `sector43clans.admin` | Disband any clan |
+| `/resize` | `sector43clans.resize` | Show your height |
+| `/resize <height>` | `sector43clans.resize` | Set your height in blocks (default 1.8, limits from config) |
+| `/resize reset` | `sector43clans.resize` | Back to normal height |
+| `/resize <height> <player>` | `sector43clans.resize.others` | Set another player's height |
 
 A player can be in only one clan at a time. A leader can't leave while other members remain: transfer leadership or disband the clan first.
 
@@ -66,12 +71,17 @@ The mod registers its permissions through the NeoForge Permission API, so LuckPe
 | Permission | Default | Allows |
 |---|---|---|
 | `sector43clans.create` | operators | Creating clans |
+| `sector43clans.invite` | operators | Inviting players to your clan |
 | `sector43clans.admin` | operators | `/clan admin` commands |
+| `sector43clans.resize` | operators | `/resize` for yourself |
+| `sector43clans.resize.others` | operators | `/resize` for other players |
 
 Example with LuckPerms. Only VIP and higher groups can create clans:
 
 ```
 /lp group vip permission set sector43clans.create true
+/lp group vip permission set sector43clans.invite true
+/lp group vip permission set sector43clans.resize true
 /lp group admin permission set sector43clans.admin true
 ```
 
@@ -89,6 +99,7 @@ Groups that inherit from `vip` get the permission automatically.
 | `colorNames` | true | Color player names in the clan color. If `false`, only the tag is colored |
 | `friendlyFire` | true | Whether clan members can damage each other |
 | `inviteTimeoutSeconds` | 300 | How long an invitation stays valid |
+| `resizeMinHeight` / `resizeMaxHeight` | 1.3 / 2.5 | `/resize` height limits in blocks |
 
 ## How it works
 

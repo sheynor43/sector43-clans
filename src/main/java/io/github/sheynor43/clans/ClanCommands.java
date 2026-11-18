@@ -162,6 +162,9 @@ public final class ClanCommands {
         if (clan == null) {
             return 0;
         }
+        if (!ClanPermissions.has(ctx.getSource().getPlayerOrException(), ClanPermissions.INVITE)) {
+            return fail(ctx, "Приглашать в клан могут только VIP и выше.");
+        }
         ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
         MinecraftServer server = ctx.getSource().getServer();
         if (ClanData.get(server).byMember(target.getUUID()) != null) {
