@@ -7,6 +7,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -23,12 +26,24 @@ public class Sector43Clans {
 
         NeoForge.EVENT_BUS.addListener(PermissionGatherEvent.Nodes.class, event -> event.addNodes(
                 ClanPermissions.CREATE, ClanPermissions.INVITE, ClanPermissions.ADMIN,
-                ClanPermissions.RESIZE, ClanPermissions.RESIZE_OTHERS));
+                ClanPermissions.RESIZE, ClanPermissions.RESIZE_OTHERS, ClanPermissions.WORLDTOGGLE));
         NeoForge.EVENT_BUS.addListener(RegisterCommandsEvent.class, event -> {
             ClanCommands.register(event.getDispatcher());
             ResizeCommand.register(event.getDispatcher());
+            WorldGate.register(event.getDispatcher());
         });
-        NeoForge.EVENT_BUS.addListener(ServerStartedEvent.class, event -> ClanManager.syncAll(event.getServer()));
+        NeoForge.EVENT_BUS.addListener(ServerStartedEvent.class, event -> {
+            ClanManager.syncAll(event.getServer());
+            ServerRules.onServerStarted(event.getServer());
+        });
+        NeoForge.EVENT_BUS.addListener(EntityTravelToDimensionEvent.class, WorldGate::onTravel);
+        NeoForge.EVENT_BUS.addListener(PlayerTickEvent.Post.class, ServerRules::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(LivingEntityUseItemEvent.Finish.class, ServerRules::onItemUsed);
+        NeoForge.EVENT_BUS.addListener(PlayerEvent.PlayerLoggedOutEvent.class, event -> {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                ServerRules.onLogout(player);
+            }
+        });
         NeoForge.EVENT_BUS.addListener(ServerStoppedEvent.class, event -> ClanManager.clearInvites());
         NeoForge.EVENT_BUS.addListener(PlayerEvent.PlayerLoggedInEvent.class, event -> {
             if (event.getEntity() instanceof ServerPlayer player) {

@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
+import net.neoforged.fml.ModList;
 
 /**
  * Связывает кланы с ванильными командами scoreboard: префикс и цвет команды
@@ -56,6 +57,22 @@ public final class ClanManager {
                 scoreboard.addPlayerToTeam(name, team);
             }
         }
+        for (UUID member : clan.members.keySet()) {
+            syncTag(member, clan);
+        }
+    }
+
+    /** Тег клана в суффикс LuckPerms (для таба и чата FlectonePulse); null — убрать. */
+    public static void syncTag(UUID player, Clan clan) {
+        if (!ClanConfig.LUCKPERMS_SUFFIX.getAsBoolean() || !ModList.get().isLoaded("luckperms")) {
+            return;
+        }
+        String suffix = clan == null ? null : " &" + clan.color.getChar() + "[" + clan.tag + "]";
+        try {
+            LuckPermsBridge.setSuffix(player, suffix);
+        } catch (RuntimeException e) {
+            Sector43Clans.LOGGER.warn("Could not update LuckPerms suffix for {}", player, e);
+        }
     }
 
     public static void removeTeam(MinecraftServer server, Clan clan) {
@@ -63,6 +80,9 @@ public final class ClanManager {
         PlayerTeam team = scoreboard.getPlayerTeam(clan.teamName);
         if (team != null) {
             scoreboard.removePlayerTeam(team);
+        }
+        for (UUID member : clan.members.keySet()) {
+            syncTag(member, null);
         }
     }
 
@@ -111,6 +131,7 @@ public final class ClanManager {
         if (team != null && team.getName().startsWith(TEAM_PREFIX)) {
             server.getScoreboard().removePlayerFromTeam(name, team);
         }
+        syncTag(player.getUUID(), null);
     }
 
     /** Сообщение всем участникам клана, кто сейчас онлайн. */

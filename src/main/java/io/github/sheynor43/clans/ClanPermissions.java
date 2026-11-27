@@ -26,6 +26,11 @@ public final class ClanPermissions {
             Sector43Clans.MODID, "admin", PermissionTypes.BOOLEAN,
             (player, uuid, context) -> isOperator(player));
 
+    // sector43clans.worldtoggle — открывать и закрывать Ад и Энд
+    public static final PermissionNode<Boolean> WORLDTOGGLE = new PermissionNode<>(
+            Sector43Clans.MODID, "worldtoggle", PermissionTypes.BOOLEAN,
+            (player, uuid, context) -> isOperator(player));
+
     // sector43clans.resize — менять свой рост командой /resize (выдать группе vip)
     public static final PermissionNode<Boolean> RESIZE = new PermissionNode<>(
             Sector43Clans.MODID, "resize", PermissionTypes.BOOLEAN,

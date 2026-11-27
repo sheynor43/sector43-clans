@@ -229,6 +229,7 @@ public final class ClanCommands {
         clan.members.remove(player.getUUID());
         data.setDirty();
         ClanManager.removeFromTeam(server, clan, player.getScoreboardName());
+        ClanManager.syncTag(player.getUUID(), null);
         ClanManager.notifyMembers(server, clan, Component.literal(player.getScoreboardName() + " покинул клан."));
         return ok(ctx, Component.literal("Ты вышел из клана «" + clan.name + "»."));
     }
@@ -249,6 +250,7 @@ public final class ClanCommands {
         String name = clan.members.remove(target);
         ClanData.get(server).setDirty();
         ClanManager.removeFromTeam(server, clan, name);
+        ClanManager.syncTag(target, null);
         ClanManager.notifyMembers(server, clan, Component.literal(name + " исключён из клана."));
         ServerPlayer online = server.getPlayerList().getPlayer(target);
         if (online != null) {

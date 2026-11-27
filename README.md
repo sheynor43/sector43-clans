@@ -21,6 +21,12 @@ Players can create a clan, pick a tag and a color, and invite friends. The clan 
 - Clans are saved with the world and survive restarts.
 - A server config for name and tag length, member limit, name coloring, friendly fire and invite timeout.
 - `/resize`: players with permission can change their height (vanilla `minecraft:scale` attribute), like the ResizePlayers plugin.
+- The clan tag is written to the player's **LuckPerms suffix**, so chat and tab-list mods (e.g. FlectonePulse) show it next to the rank prefix.
+- Sector 43 season 1 server rules (each can be turned off in the config):
+  - **Nether and End are closed** until an admin opens them: `/worldtoggle nether|end open|close`;
+  - **no elytra in the End**: moved to the inventory, or dropped if it is full;
+  - **Nether overheat**: a heat gauge above the hotbar runs out in about a minute, then the player burns. Fire Resistance, a water bottle or leaving the Nether help; Fire Protection on armor slows it down;
+  - **skipping the night**: the sleeping-players percentage is set on server start (50% by default).
 
 ## Requirements
 
@@ -61,6 +67,8 @@ Players can create a clan, pick a tag and a color, and invite friends. The clan 
 | `/resize <height>` | `sector43clans.resize` | Set your height in blocks (default 1.8, limits from config) |
 | `/resize reset` | `sector43clans.resize` | Back to normal height |
 | `/resize <height> <player>` | `sector43clans.resize.others` | Set another player's height |
+| `/worldtoggle` | `sector43clans.worldtoggle` | Show whether the Nether and End are open |
+| `/worldtoggle nether\|end open\|close` | `sector43clans.worldtoggle` | Open or close the Nether or End |
 
 A player can be in only one clan at a time. A leader can't leave while other members remain: transfer leadership or disband the clan first.
 
@@ -75,6 +83,7 @@ The mod registers its permissions through the NeoForge Permission API, so LuckPe
 | `sector43clans.admin` | operators | `/clan admin` commands |
 | `sector43clans.resize` | operators | `/resize` for yourself |
 | `sector43clans.resize.others` | operators | `/resize` for other players |
+| `sector43clans.worldtoggle` | operators | `/worldtoggle` |
 
 Example with LuckPerms. Only VIP and higher groups can create clans:
 
@@ -100,6 +109,13 @@ Groups that inherit from `vip` get the permission automatically.
 | `friendlyFire` | true | Whether clan members can damage each other |
 | `inviteTimeoutSeconds` | 300 | How long an invitation stays valid |
 | `resizeMinHeight` / `resizeMaxHeight` | 1.3 / 2.5 | `/resize` height limits in blocks |
+| `luckpermsSuffix` | true | Write the clan tag to the LuckPerms suffix |
+| `sleepPercentage` | 50 | Sleeping-players percentage to skip the night; `-1` keeps the world's value |
+| `noElytraInEnd` | true | Take elytras off in the End |
+| `netherHeat` | true | Nether overheat |
+| `netherHeatMax`, `netherHeatDepletionInterval`, `netherHeatDepletionAmount` | 300, 40, 10 | Overheat speed: 300 / 10 × 40 ticks ≈ 60 seconds |
+| `netherHeatFireProtectionBonus` | 0.5 | How much each Fire Protection level slows overheating |
+| `netherHeatDamageInterval`, `netherHeatDamage`, `netherHeatFireTicks` | 20, 2.0, 60 | Damage and fire when overheated |
 
 ## How it works
 

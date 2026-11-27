@@ -38,5 +38,42 @@ public class ClanConfig {
             .comment("/resize: максимальный рост в блоках")
             .defineInRange("resizeMaxHeight", 2.5, 0.1, 16.0);
 
+    public static final ModConfigSpec.BooleanValue LUCKPERMS_SUFFIX = BUILDER
+            .comment("Записывать тег клана в суффикс LuckPerms, чтобы его показывали FlectonePulse и другие моды чата/таба")
+            .define("luckpermsSuffix", true);
+
+    public static final ModConfigSpec.IntValue SLEEP_PERCENTAGE = BUILDER
+            .comment("Сколько процентов игроков должно лечь спать, чтобы пропустить ночь (ставится при старте сервера). -1 — не трогать")
+            .defineInRange("sleepPercentage", 50, -1, 100);
+
+    public static final ModConfigSpec.BooleanValue NO_ELYTRA_IN_END = BUILDER
+            .comment("Снимать элитры с игроков в Энде")
+            .define("noElytraInEnd", true);
+
+    public static final ModConfigSpec.BooleanValue HEAT_ENABLED = BUILDER
+            .comment("Перегрев в Аду: шкала жары убывает, на нуле игрок горит. Спасают огнестойкость, бутылка воды и уход из Ада")
+            .define("netherHeat", true);
+    public static final ModConfigSpec.IntValue HEAT_MAX = BUILDER
+            .comment("Запас прохлады (как запас воздуха)")
+            .defineInRange("netherHeatMax", 300, 1, 100000);
+    public static final ModConfigSpec.IntValue HEAT_DEPLETION_INTERVAL = BUILDER
+            .comment("Раз во сколько тиков убывает прохлада")
+            .defineInRange("netherHeatDepletionInterval", 40, 1, 100000);
+    public static final ModConfigSpec.IntValue HEAT_DEPLETION_AMOUNT = BUILDER
+            .comment("На сколько убывает прохлада за раз (300 / 10 * 40 тиков = 60 секунд)")
+            .defineInRange("netherHeatDepletionAmount", 10, 1, 100000);
+    public static final ModConfigSpec.DoubleValue HEAT_FIRE_PROTECTION_BONUS = BUILDER
+            .comment("Каждый уровень «Защиты от огня» на броне замедляет перегрев на эту долю (0.5 = +50%)")
+            .defineInRange("netherHeatFireProtectionBonus", 0.5, 0.0, 100.0);
+    public static final ModConfigSpec.IntValue HEAT_DAMAGE_INTERVAL = BUILDER
+            .comment("Раз во сколько тиков урон при перегреве")
+            .defineInRange("netherHeatDamageInterval", 20, 1, 100000);
+    public static final ModConfigSpec.DoubleValue HEAT_DAMAGE = BUILDER
+            .comment("Урон при перегреве")
+            .defineInRange("netherHeatDamage", 2.0, 0.0, 1000.0);
+    public static final ModConfigSpec.IntValue HEAT_FIRE_TICKS = BUILDER
+            .comment("На сколько тиков поджигать при перегреве (0 — не поджигать)")
+            .defineInRange("netherHeatFireTicks", 60, 0, 100000);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }
